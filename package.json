@@ -1,0 +1,32 @@
+{
+	"name": "idb-stores",
+	"packageManager": "yarn@4.1.0",
+	"version": "0.0.0",
+	"engines": {
+		"node": ">=18"
+	},
+	"type": "module",
+  "types": "./dist/index.d.ts",
+	"module": "./src/index.ts",
+	"main": "./dist/index.js",
+	"devDependencies": {
+		"@biomejs/biome": "1.5.3",
+		"@total-typescript/ts-reset": "^0.5.1",
+		"typescript": "^5.3.3"
+	},
+	"dependencies": {
+		"idb-keyval": "^6.2.1",
+		"loglevel": "^1.9.1",
+		"zod": "^3.22.4"
+	},
+	"scripts": {
+		"check": "biome check --apply ./src",
+		"clean": "rm -rf dist",
+		"build": "yarn clean && tsc --project tsconfig.json",
+		"prepare": "yarn build"
+	},
+	"license": "MIT",
+	"files": [
+		"dist"
+	]
+}

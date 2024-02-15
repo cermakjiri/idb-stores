@@ -1,0 +1,24 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "compilerOptions": {
+        "target": "ESNext",
+        "allowJs": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "esModuleInterop": true,
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "verbatimModuleSyntax": true,
+        "incremental": true,
+        "types": ["@total-typescript/ts-reset"],
+        "baseUrl": "./src",
+        "outDir": "./dist",
+        "sourceMap": true,
+        "declaration": true
+    },
+    "exclude": ["node_modules", ".yarn", "build", "dist"]
+}
