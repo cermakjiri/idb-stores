@@ -19,7 +19,7 @@
             "node"
         ],
         "baseUrl": "./src",
-        "outDir": "./dist",
+        "outDir": "./esm",
         "sourceMap": true,
         "declaration": true
     },
@@ -30,6 +30,7 @@
         "node_modules",
         ".yarn",
         "build",
-        "dist"
+        "esm",
+        "cjs"
     ]
 }

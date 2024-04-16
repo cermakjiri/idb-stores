@@ -8,9 +8,9 @@
     },
     "type": "module",
     "main": "cjs/index.js",
-    "module": "dist/index.js",
+    "module": "esm/index.js",
     "exports": {
-        ".": "./dist/index.js",
+        ".": "./esm/index.js",
         "./cjs": "./cjs/index.js"
     },
     "devDependencies": {
@@ -34,7 +34,7 @@
     "scripts": {
         "format": "prettier --write ./**/*.{ts,js,json,yml,md} --ignore-path .gitignore --log-level=warn --cache --cache-strategy=content --cache-location=.cache/prettier --no-editorconfig",
         "lint": "eslint --cache --cache-strategy=content --cache-location .cache/eslint",
-        "build:es": "rm -rf dist && tsc --project tsconfig.json",
+        "build:es": "rm -rf esm && tsc --project tsconfig.json",
         "build:cjs": "rm -rf cjs && tsc --project tsconfig.cjs.json || exit 0",
         "build": "yarn build:es && yarn build:cjs",
         "test:build": "vite build --config ./tests/vite.config.ts",
