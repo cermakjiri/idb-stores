@@ -36,7 +36,7 @@
         "lint": "eslint --cache --cache-strategy=content --cache-location .cache/eslint",
         "build:es": "rm -rf dist && tsc --project tsconfig.json",
         "build:cjs": "rm -rf cjs && tsc --project tsconfig.cjs.json || exit 0",
-        "build": "yarn build:es & yarn build:cjs",
+        "build": "yarn build:es && yarn build:cjs",
         "test:build": "vite build --config ./tests/vite.config.ts",
         "test:run": "node ./tests/script/puppeteerRunner.mjs",
         "test": "yarn test:build && yarn test:run"
