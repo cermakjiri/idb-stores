@@ -4,7 +4,9 @@ enum Pathnames {
 }
 
 export async function evaluateTest(test: () => Promise<void>) {
-    if (Object.values(Pathnames).includes(window.location.pathname)) {
+    if (
+        Object.values(Pathnames).includes(window.location.pathname as Pathnames)
+    ) {
         return;
     }
 

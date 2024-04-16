@@ -24,7 +24,7 @@ export function defaultNoIDBSupportHandler<const StoreSchemas extends UnknownSto
 		return getMockStore<StoreSchemas, StoreName>(storeSchemas, storeName);
 	};
 }
-export interface InitDatabaseProps {
+export interface InitIDBProps {
 	database: {
 		/**
 		 * IndexedDB database name
@@ -53,7 +53,7 @@ export interface InitDatabaseProps {
 
 	logLevel?: LogLevelNames | "silent";
 }
-export function initDatabase<const Props extends InitDatabaseProps>({
+export function initIDB<const Props extends InitIDBProps>({
 	database: { name: databaseName, version: databaseVersion },
 	storeSchemas,
 	noIDBSupportHandler,
@@ -75,7 +75,12 @@ export function initDatabase<const Props extends InitDatabaseProps>({
 	const storeNames = Object.keys(storeSchemas) as ReadonlyArray<StringKey<StoreSchemas>>;
 
 	// Create one database connection for all stores:
-	const connection = createConnection({ logger, databaseName, databaseVersion, storeNames });
+	const connection = createConnection({
+		logger,
+		databaseName,
+		databaseVersion,
+		storeNames,
+	});
 
 	function getDatabaseStore<StoreName extends StringKey<StoreSchemas>>(storeName: StoreName) {
 		return getStore<StoreSchemas, StoreName>(connection, storeSchemas, storeName);

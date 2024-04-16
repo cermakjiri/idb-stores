@@ -1,11 +1,11 @@
 import { z } from "zod";
 
-import { initDatabase } from "../../src/initDatabase";
+import { initIDB } from "../../src/initIDB";
 
 export async function smokeTest() {
     console.log("Running smoke test...");
 
-    const getMyStore = initDatabase({
+    const getMyStore = initIDB({
         database: {
             name: "my-database",
             version: 1,

@@ -2,7 +2,7 @@ import type { UseStore } from "idb-keyval";
 import type { z } from "zod";
 
 import { IDBZodError } from "../errors";
-import { type Logger } from "../logger";
+import type { Logger } from "../logger";
 import type { UnknownStoreSchema } from "../types";
 
 export const isSupported = () => "indexedDB" in globalThis;

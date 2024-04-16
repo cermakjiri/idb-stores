@@ -15,3 +15,5 @@ node_modules
 .pnp.*
 
 dist
+
+.DS_Store
