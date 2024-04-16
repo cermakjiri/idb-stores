@@ -7,12 +7,12 @@
         "node": ">=18"
     },
     "type": "module",
-    "module": "./dist/index.js",
-    "main": "./cjs/index.cjs",
     "exports": {
         ".": {
             "import": "./dist/index.js",
-            "require": "./cjs/index.cjs"
+            "require": "./cjs/index.cjs",
+            "default": "./dist/index.js",
+            "node": "./dist/index.js"
         }
     },
     "devDependencies": {
@@ -43,13 +43,5 @@
         "test:run": "node ./tests/script/puppeteerRunner.mjs",
         "test": "yarn test:build && yarn test:run"
     },
-    "license": "MIT",
-    "files": [
-        "dist",
-        "cjs",
-        "package.json",
-        "tsconfig.json",
-        "tsconfig.cjs.json",
-        "README.md"
-    ]
+    "license": "MIT"
 }
