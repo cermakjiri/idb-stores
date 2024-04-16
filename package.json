@@ -31,7 +31,6 @@
         "format": "prettier --write ./**/*.{ts,js,json,yml,md} --ignore-path .gitignore --log-level=warn --cache --cache-strategy=content --cache-location=.cache/prettier --no-editorconfig",
         "lint": "eslint --cache --cache-strategy=content --cache-location .cache/eslint",
         "build": "rm -rf dist && tsc",
-        "prepare": "yarn build",
         "test:build": "vite build --config ./tests/vite.config.ts",
         "test:run": "node ./tests/script/puppeteerRunner.mjs",
         "test": "yarn test:build && yarn test:run"
