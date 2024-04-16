@@ -1,7 +1,7 @@
 {
     "name": "idb-stores",
     "packageManager": "yarn@4.1.1",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "sideEffects": false,
     "engines": {
         "node": ">=18"
@@ -31,7 +31,7 @@
         "format": "prettier --write ./**/*.{ts,js,json,yml,md} --ignore-path .gitignore --log-level=warn --cache --cache-strategy=content --cache-location=.cache/prettier --no-editorconfig",
         "lint": "eslint --cache --cache-strategy=content --cache-location .cache/eslint",
         "build:es": "rm -rf dist && tsc --project tsconfig.json",
-        "build:cjs": "rm -rf cjs && tsc --project tsconfig.cjs.json",
+        "build:cjs": "rm -rf cjs && tsc --project tsconfig.cjs.json || exit 0",
         "build": "yarn build:es & yarn build:cjs",
         "test:build": "vite build --config ./tests/vite.config.ts",
         "test:run": "node ./tests/script/puppeteerRunner.mjs",

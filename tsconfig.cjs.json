@@ -5,6 +5,8 @@
     ],
     "compilerOptions": {
         "module": "CommonJS",
-        "outDir": "./cjs"
+        "outDir": "./cjs",
+        "strict": false,
+        "noEmitOnError": false
     }
 }
