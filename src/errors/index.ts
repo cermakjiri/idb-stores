@@ -1,4 +1,4 @@
-export type IDBZodErrorCode =
+export type IDBStoresErrorCode =
     /**
      * Validator for given key in given shcema was not found.
      */
@@ -9,12 +9,12 @@ export type IDBZodErrorCode =
      */
     | 'invalid-db-version';
 
-const errorId = 'IDB_ZOD_ERROR';
+const errorId = 'IDB_STORES_ERROR';
 
 type ErrorId = typeof errorId;
 
-export class IDBZodError<
-    Code extends IDBZodErrorCode = IDBZodErrorCode,
+export class IDBStoresError<
+    Code extends IDBStoresErrorCode = IDBStoresErrorCode,
     Description extends string = string,
     OriginalError extends Error = Error,
 > extends Error {
@@ -30,18 +30,18 @@ export class IDBZodError<
         this.id = errorId;
         this.code = code;
         this.description = description;
-        this.name = this.constructor.name;
+        this.name = errorId;
         this.originalError = originalError;
     }
 }
 
-export function isIDBZodError(error: unknown): error is IDBZodError {
-    return error instanceof IDBZodError && error.id === errorId;
+export function isError(error: unknown): error is IDBStoresError {
+    return error instanceof IDBStoresError && error.id === errorId;
 }
 
-export function isIDBZodErrorWithCodes<const Codes extends IDBZodErrorCode[], Description extends string = string>(
+export function isErrorWithCodes<const Codes extends IDBStoresErrorCode[], Description extends string = string>(
     error: unknown,
     codes: Codes,
-): error is IDBZodError<Codes[number], Description> {
-    return isIDBZodError(error) && codes.includes(error.code);
+): error is IDBStoresError<Codes[number], Description> {
+    return isError(error) && codes.includes(error.code);
 }

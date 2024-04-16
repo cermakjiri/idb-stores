@@ -1,6 +1,6 @@
 import { setLevel, type LogLevelNames } from 'loglevel';
 
-import { IDBZodError } from './errors';
+import { IDBStoresError } from './errors';
 import { getMockStore, getStore } from './getStore';
 import { defaultLogger, type Logger } from './logger';
 import type { StringKey, UnknownStoreSchemas } from './types';
@@ -8,7 +8,7 @@ import { createConnection, isSupported } from './utils';
 
 function assertDatabaseVersion(databaseVersion: number) {
     if (databaseVersion < 1 || !Number.isInteger(databaseVersion)) {
-        throw new IDBZodError('invalid-db-version', 'Database version must be an integer greater than 0');
+        throw new IDBStoresError('invalid-db-version', 'Database version must be an integer greater than 0');
     }
 }
 

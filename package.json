@@ -7,9 +7,8 @@
         "node": ">=18"
     },
     "type": "module",
-    "exports": {
-        ".": "./dist/index.js"
-    },
+    "module": "dist/index.js",
+    "main": "cjs/index.cjs",
     "devDependencies": {
         "@eslint/js": "^9.0.0",
         "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
@@ -31,13 +30,20 @@
     "scripts": {
         "format": "prettier --write ./**/*.{ts,js,json,yml,md} --ignore-path .gitignore --log-level=warn --cache --cache-strategy=content --cache-location=.cache/prettier --no-editorconfig",
         "lint": "eslint --cache --cache-strategy=content --cache-location .cache/eslint",
-        "build": "rm -rf dist && tsc",
+        "build:es": "rm -rf dist && tsc --project tsconfig.json",
+        "build:cjs": "rm -rf cjs && tsc --project tsconfig.cjs.json",
+        "build": "yarn build:es & yarn build:cjs",
         "test:build": "vite build --config ./tests/vite.config.ts",
         "test:run": "node ./tests/script/puppeteerRunner.mjs",
         "test": "yarn test:build && yarn test:run"
     },
     "license": "MIT",
     "files": [
-        "dist"
+        "dist",
+        "cjs",
+        "package.json",
+        "tsconfig.json",
+        "tsconfig.cjs.json",
+        "README.md"
     ]
 }

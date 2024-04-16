@@ -1,0 +1,10 @@
+{
+    "shcema": "https://json.schemastore.org/tsconfig",
+    "extends": [
+        "./tsconfig.json"
+    ],
+    "compilerOptions": {
+        "module": "CommonJS",
+        "outDir": "./cjs"
+    }
+}

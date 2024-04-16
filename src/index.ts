@@ -1,2 +1,2 @@
-export { isIDBZodError, isIDBZodErrorWithCodes } from './errors';
+export { isError, isErrorWithCodes } from './errors';
 export * from './initIDB';

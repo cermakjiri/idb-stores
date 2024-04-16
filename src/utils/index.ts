@@ -1,7 +1,7 @@
 import type { UseStore } from 'idb-keyval';
 import type { z } from 'zod';
 
-import { IDBZodError } from '../errors';
+import { IDBStoresError } from '../errors';
 import type { Logger } from '../logger';
 import type { UnknownStoreSchema } from '../types';
 
@@ -14,7 +14,7 @@ export function getValueValidator<Schema extends UnknownStoreSchema, Key extends
     const validator = schema.shape[key] as z.ZodTypeAny;
 
     if (!validator) {
-        throw new IDBZodError(
+        throw new IDBStoresError(
             'missing-schema-property',
             `No schema property found for "${key as string}" key in ${JSON.stringify(schema.shape, null, 2)} shape.`,
         );
