@@ -10,11 +10,16 @@
         ".": "./dist/index.js"
     },
     "devDependencies": {
-        "@biomejs/biome": "1.7.0",
+        "@eslint/js": "^9.0.0",
+        "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
         "@total-typescript/ts-reset": "^0.5.1",
         "@types/node": "^20.12.7",
+        "eslint": "^9.0.0",
+        "globals": "^15.0.0",
+        "prettier": "^3.2.5",
         "puppeteer": "^22.6.5",
         "typescript": "^5.4.5",
+        "typescript-eslint": "^7.7.0",
         "vite": "^5.2.9"
     },
     "dependencies": {
@@ -23,7 +28,8 @@
         "zod": "^3.22.4"
     },
     "scripts": {
-        "check": "biome check --apply ./src",
+        "format": "prettier --write ./**/*.{ts,js,json,yml,md} --ignore-path .gitignore --log-level=warn --cache --cache-strategy=content --cache-location=.cache/prettier --no-editorconfig",
+        "lint": "eslint --cache --cache-strategy=content --cache-location .cache/eslint",
         "build": "rm -rf dist && tsc",
         "prepare": "yarn build",
         "test:build": "vite build --config ./tests/vite.config.ts",

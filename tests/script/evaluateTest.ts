@@ -1,12 +1,10 @@
 enum Pathnames {
-    Success = "/success",
-    Failure = "/failure",
+    Success = '/success',
+    Failure = '/failure',
 }
 
 export async function evaluateTest(test: () => Promise<void>) {
-    if (
-        Object.values(Pathnames).includes(window.location.pathname as Pathnames)
-    ) {
+    if (Object.values(Pathnames).includes(window.location.pathname as Pathnames)) {
         return;
     }
 
@@ -15,14 +13,14 @@ export async function evaluateTest(test: () => Promise<void>) {
     try {
         await test();
 
-        console.log("🟢 Smoke test passed!");
+        console.log('🟢 Smoke test passed!');
 
         url.pathname = Pathnames.Success;
     } catch (error) {
-        console.error("🔴 Smoke test failed:", error);
+        console.error('🔴 Smoke test failed:', error);
 
         url.pathname = Pathnames.Failure;
-        url.searchParams.set("error", (error as Error).toString());
+        url.searchParams.set('error', (error as Error).toString());
     }
 
     window.location.assign(url);

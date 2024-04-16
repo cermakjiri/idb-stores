@@ -4,10 +4,10 @@ Strongly typed IndexedDB stores with [Zod](https://zod.dev). Store can present a
 
 ## Features
 
-- Type-safe IndexedDB.
-- Runtime validations against Zod schemas.
-- Create multiple IndexedDB databases, each with multiple stores.
-- Mocked store for non-browser env (SSR).
+-   Type-safe IndexedDB.
+-   Runtime validations against Zod schemas.
+-   Create multiple IndexedDB databases, each with multiple stores.
+-   Mocked store for non-browser env (SSR).
 
 ## Getting started
 
@@ -16,44 +16,44 @@ yarn add idb-stores
 ```
 
 ```ts
-import { z } from "zod";
-import { initIDB } from "idb-stores";
+import { initIDB } from 'idb-stores';
+import { z } from 'zod';
 
 (async () => {
-  // Initialize IndexedDB database
-  const getStore = initIDB({
-    database: {
-      name: "my-database",
-      version: 1,
-    },
+    // Initialize IndexedDB database
+    const getStore = initIDB({
+        database: {
+            name: 'my-database',
+            version: 1,
+        },
 
-    storeSchemas: {
-      auth: z.object({
-        username: z.string().optional(),
+        storeSchemas: {
+            auth: z.object({
+                username: z.string().optional(),
 
-        meta: z
-          .array(
-            z.shape({
-              foo: z.boolean(),
-            })
-          )
-          .optional(),
-      }),
-    },
-  });
+                meta: z
+                    .array(
+                        z.shape({
+                            foo: z.boolean(),
+                        }),
+                    )
+                    .optional(),
+            }),
+        },
+    });
 
-  const store = getStore("auth"); // ✅
-  // const store = getStore('non-existing-store-name') // ❌
+    const store = getStore('auth'); // ✅
+    // const store = getStore('non-existing-store-name') // ❌
 
-  await store.set("username", "alois"); // ✅
-  // await store.set('username', 1234) // ❌
+    await store.set('username', 'alois'); // ✅
+    // await store.set('username', 1234) // ❌
 
-  const username = await store.get("username"); // `username` is type of `string | undefined`
+    const username = await store.get('username'); // `username` is type of `string | undefined`
 
-  // ----
+    // ----
 
-  await store.set("meta", [{ foo: true }, { foo: false }]);
-  const meta = await store.get("meta"); // [{ foo: true }, { foo: false }]
+    await store.set('meta', [{ foo: true }, { foo: false }]);
+    const meta = await store.get('meta'); // [{ foo: true }, { foo: false }]
 })();
 ```
 
