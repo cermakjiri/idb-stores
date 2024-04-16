@@ -1,7 +1,7 @@
 {
     "name": "idb-stores",
     "packageManager": "yarn@4.1.1",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "sideEffects": false,
     "engines": {
         "node": ">=18"
