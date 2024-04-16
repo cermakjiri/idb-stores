@@ -7,9 +7,14 @@
         "node": ">=18"
     },
     "type": "module",
-    "main": "./cjs/index.js",
-    "module": "./esm/index.js",
-    "types": "./esm/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./esm/index.js",
+            "require": "./cjs/index.js"
+        },
+        "./esm": "./esm/index.js",
+        "./cjs": "./cjs/index.js"
+    },
     "devDependencies": {
         "@eslint/js": "^9.0.0",
         "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
