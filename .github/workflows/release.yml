@@ -21,7 +21,7 @@ jobs:
                   registry-url: 'https://registry.npmjs.org'
 
             - name: Install dependencies
-              run: yarn install --immutable
+              run: corepack enable && yarn install --immutable
 
             - name: Format & lint codebase
               run: yarn format && yarn lint
