@@ -14,7 +14,7 @@ function assertDatabaseVersion(databaseVersion: number) {
 
 export function defaultNoIDBSupportHandler<const StoreSchemas extends UnknownStoreSchemas>(storeSchemas: StoreSchemas) {
     return function getDatabaseMockedStore<StoreName extends StringKey<StoreSchemas>>(storeName: StoreName) {
-        return getMockStore<StoreSchemas, StoreName>(storeSchemas, storeName);
+        return getMockStore<StoreName, StoreSchemas[StoreName]>(storeSchemas[storeName], storeName);
     };
 }
 export interface InitIDBProps {
@@ -60,12 +60,14 @@ export function initIDB<const Props extends InitIDBProps>({
     type StoreSchemas = Props['storeSchemas'];
 
     if (!isSupported()) {
-        return noIDBSupportHandler
-            ? noIDBSupportHandler<StoreSchemas>(storeSchemas)
-            : defaultNoIDBSupportHandler<StoreSchemas>(storeSchemas);
+        if (noIDBSupportHandler) {
+            return noIDBSupportHandler<StoreSchemas>(storeSchemas);
+        }
+
+        return defaultNoIDBSupportHandler<StoreSchemas>(storeSchemas);
     }
 
-    const storeNames = Object.keys(storeSchemas) as ReadonlyArray<StringKey<StoreSchemas>>;
+    const storeNames: ReadonlyArray<StringKey<StoreSchemas>> = Object.keys(storeSchemas);
 
     // Create one database connection for all stores:
     const connection = createConnection({
@@ -75,8 +77,12 @@ export function initIDB<const Props extends InitIDBProps>({
         storeNames,
     });
 
-    function getDatabaseStore<StoreName extends StringKey<StoreSchemas>>(storeName: StoreName) {
-        return getStore<StoreSchemas, StoreName>(connection, storeSchemas, storeName);
+    function getDatabaseStore<const StoreName extends StringKey<StoreSchemas>>(storeName: StoreName) {
+        const storeSchema = storeSchemas[storeName];
+        type StoreSchema = StoreSchemas[StoreName];
+
+        // @ts-expect-error - ???
+        return getStore<StoreName, StoreSchema>(connection, storeSchema, storeName);
     }
 
     return getDatabaseStore;

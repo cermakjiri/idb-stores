@@ -9,11 +9,9 @@
     "type": "module",
     "exports": {
         ".": {
-            "import": "./esm/index.js",
-            "require": "./cjs/index.js"
+            "import": "./esm/index.js"
         },
-        "./esm": "./esm/index.js",
-        "./cjs": "./cjs/index.js"
+        "./esm": "./esm/index.js"
     },
     "devDependencies": {
         "@eslint/js": "^9.0.0",
@@ -35,13 +33,14 @@
     },
     "scripts": {
         "format": "prettier --write ./**/*.{ts,js,json,yml,md} --ignore-path .gitignore --log-level=warn --cache --cache-strategy=content --cache-location=.cache/prettier --no-editorconfig",
-        "lint": "eslint --cache --cache-strategy=content --cache-location .cache/eslint",
+        "lint": "eslint --cache --cache-strategy=content --cache-location .cache/eslint \"./src/**/*\"",
+        "types-check": "tsc --project tsconfig.types.json",
         "build:es": "rm -rf esm && tsc --project tsconfig.json",
-        "build:cjs": "rm -rf cjs && tsc --project tsconfig.cjs.json || exit 0",
-        "build": "yarn build:es && yarn build:cjs",
+        "build": "yarn build:es",
         "test:build": "vite build --config ./tests/vite.config.ts",
         "test:run": "node ./tests/script/puppeteerRunner.mjs",
-        "test": "yarn test:build && yarn test:run"
+        "test": "yarn test:build && yarn test:run",
+        "deploy": "yarn format && yarn lint && yarn types-check && yarn build && yarn test"
     },
     "license": "MIT"
 }

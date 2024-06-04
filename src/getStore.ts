@@ -1,47 +1,21 @@
 import * as idb from 'idb-keyval';
 import type { z } from 'zod';
 
-import type { StoreWithSchema, StringKey, UnknownStoreSchemas } from './types';
+import type { UnknownStoreSchema } from './types';
 import { createCustomUseStore, getValueValidator } from './utils';
-
-export function getMockStore<const StoreSchemas extends UnknownStoreSchemas, StoreName extends StringKey<StoreSchemas>>(
-    _storeSchemas: StoreSchemas,
-    storeName: StoreName,
-) {
-    type StoreSchema = StoreSchemas[StoreName];
-    type Schema = z.infer<StoreSchema>;
-    type StoreKey = keyof Schema;
-
-    type Store = StoreWithSchema<StoreName, StoreSchema>;
-
-    return {
-        name: storeName,
-        async get<Key extends StoreKey>(_key: Key) {
-            return undefined as Schema[Key];
-        },
-        async set<Key extends StoreKey>(_key: Key, _value: Required<Schema[Key]>) {},
-        async remove<Key extends StoreKey>(_key: Key) {},
-        async clear() {},
-    } as const satisfies Store;
-}
 
 /**
  * Creates a strongly-typed store in IndexedDB.
  * - Put a new store name with its schema in `packages/storage/settings.ts` to register it.
  * - After adding a new store, you have to delete the IndexedDB database in the browser or increase the database version.
  */
-export function getStore<const StoreSchemas extends UnknownStoreSchemas, StoreName extends StringKey<StoreSchemas>>(
+export function getStore<const StoreName extends string, const StoreSchema extends UnknownStoreSchema>(
     connection: Promise<IDBDatabase>,
-    storeSchemas: StoreSchemas,
+    storeSchema: StoreSchema,
     storeName: StoreName,
 ) {
-    const storeSchema = storeSchemas[storeName];
-
-    type StoreSchema = StoreSchemas[StoreName];
     type Schema = z.infer<StoreSchema>;
     type StoreKey = keyof Schema;
-
-    type Store = StoreWithSchema<StoreName, StoreSchema>;
 
     // Using a custom function instead of idb.crateStore which doesn't support creating multiple stores:
     const useStore = createCustomUseStore(connection, storeName);
@@ -67,6 +41,10 @@ export function getStore<const StoreSchemas extends UnknownStoreSchemas, StoreNa
             await idb.set(key as IDBValidKey, unknownValue, useStore);
         },
 
+        async setMany(values: Partial<Record<StoreKey, Required<Schema[StoreKey]>>>) {
+            await idb.setMany(Object.entries(values), useStore);
+        },
+
         async remove<Key extends StoreKey>(key: Key) {
             await idb.del(key as IDBValidKey, useStore);
         },
@@ -74,7 +52,31 @@ export function getStore<const StoreSchemas extends UnknownStoreSchemas, StoreNa
         async clear() {
             await idb.clear(useStore);
         },
-    } as const satisfies Store;
+    } as const;
 
     return store;
+}
+
+export function getMockStore<const StoreName extends string, const StoreSchema extends UnknownStoreSchema>(
+    _storeSchema: StoreSchema,
+    storeName: StoreName,
+) {
+    type Store = ReturnType<typeof getStore<StoreName, StoreSchema>>;
+    type Schema = z.infer<StoreSchema>;
+    type StoreKey = keyof Schema;
+
+    return {
+        name: storeName,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        async get<Key extends StoreKey>(key: Key) {
+            return undefined as Schema[Key];
+        },
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        async set<Key extends StoreKey>(key: Key, value: Required<Schema[Key]>) {},
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        async remove<Key extends StoreKey>(key: Key) {},
+        async clear() {},
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        async setMany(values: Partial<Record<StoreKey, Required<Schema[StoreKey]>>>) {},
+    } as const satisfies Store;
 }

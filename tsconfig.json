@@ -11,7 +11,6 @@
         "moduleResolution": "Bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "jsx": "preserve",
         "verbatimModuleSyntax": true,
         "incremental": false,
         "types": [
@@ -31,6 +30,7 @@
         ".yarn",
         "build",
         "esm",
-        "cjs"
+        "cjs",
+        "**/__tests__/**"
     ]
 }
