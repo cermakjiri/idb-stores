@@ -1,6 +1,6 @@
 # idb-stores
 
-Strongly typed IndexedDB stores with [Zod](https://zod.dev). Store can present arbitrary an object schema.
+Strongly typed IndexedDB stores with [Zod](https://zod.dev). Store can present an arbitrary object schema.
 
 ## Features
 
