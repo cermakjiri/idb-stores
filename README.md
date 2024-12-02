@@ -4,10 +4,10 @@ Strongly typed IndexedDB stores with [Zod](https://zod.dev). Store can present a
 
 ## Features
 
--   Type-safe IndexedDB.
--   Runtime validations against Zod schemas.
--   Create multiple IndexedDB databases, each with multiple stores.
--   Mocked store for non-browser env (SSR).
+- Type-safe IndexedDB.
+- Runtime validations against Zod schemas.
+- Create multiple IndexedDB databases, each with multiple stores.
+- Mocked store for non-browser env (SSR).
 
 ## Getting started
 

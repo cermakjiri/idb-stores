@@ -14,24 +14,12 @@
         "isolatedModules": true,
         "verbatimModuleSyntax": true,
         "incremental": false,
-        "types": [
-            "@total-typescript/ts-reset",
-            "node"
-        ],
+        "types": ["@total-typescript/ts-reset", "node"],
         "baseUrl": "./src",
         "outDir": "./esm",
         "sourceMap": true,
         "declaration": true
     },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        ".yarn",
-        "build",
-        "esm",
-        "cjs",
-        "**/__tests__/**"
-    ]
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", ".yarn", "build", "esm", "cjs", "**/__tests__/**"]
 }
