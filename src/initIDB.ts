@@ -1,8 +1,8 @@
-import { setLevel, type LogLevelNames } from 'loglevel';
+import { enableAll, setLevel } from 'loglevel';
 
 import { IDBStoresError } from './errors';
 import { getMockStore, getStore } from './getStore';
-import { defaultLogger, type Logger } from './logger';
+import { createDefaultLogger, defaultLogLevel, type Logger, type LogLevel } from './logger';
 import type { StringKey, UnknownStoreSchemas } from './types';
 import { createConnection, isSupported } from './utils';
 
@@ -44,15 +44,18 @@ export interface InitIDBProps {
 
     logger?: Logger;
 
-    logLevel?: LogLevelNames | 'silent';
+    logLevel?: LogLevel | 'silent';
 }
+
+// TODO: migrations
 export function initIDB<const Props extends InitIDBProps>({
     database: { name: databaseName, version: databaseVersion },
     storeSchemas,
     noIDBSupportHandler,
-    logger = defaultLogger,
-    logLevel = 'info',
+    logger = createDefaultLogger(defaultLogLevel),
+    logLevel = defaultLogLevel,
 }: Props) {
+    enableAll();
     setLevel(logLevel);
 
     assertDatabaseVersion(databaseVersion);
@@ -81,8 +84,8 @@ export function initIDB<const Props extends InitIDBProps>({
         const storeSchema = storeSchemas[storeName];
         type StoreSchema = StoreSchemas[StoreName];
 
-        // @ts-expect-error - ???
-        return getStore<StoreName, StoreSchema>(connection, storeSchema, storeName);
+        // @ts-expect-error - TODO:
+        return getStore<StoreName, StoreSchema>({ connection, storeSchema, storeName, logger });
     }
 
     return getDatabaseStore;

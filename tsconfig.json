@@ -4,6 +4,7 @@
         "target": "ESNext",
         "allowJs": true,
         "skipLibCheck": true,
+        "rootDir": "./src",
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "esModuleInterop": true,

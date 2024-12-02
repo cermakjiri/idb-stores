@@ -1,19 +1,28 @@
 import * as idb from 'idb-keyval';
 import type { z } from 'zod';
 
+import type { Logger } from './logger';
 import type { UnknownStoreSchema } from './types';
 import { createCustomUseStore, getValueValidator } from './utils';
+
+interface GetStoreProps<StoreName extends string, StoreSchema extends UnknownStoreSchema> {
+    connection: Promise<IDBDatabase>;
+    storeSchema: StoreSchema;
+    storeName: StoreName;
+    logger: Logger;
+}
 
 /**
  * Creates a strongly-typed store in IndexedDB.
  * - Put a new store name with its schema in `packages/storage/settings.ts` to register it.
  * - After adding a new store, you have to delete the IndexedDB database in the browser or increase the database version.
  */
-export function getStore<const StoreName extends string, const StoreSchema extends UnknownStoreSchema>(
-    connection: Promise<IDBDatabase>,
-    storeSchema: StoreSchema,
-    storeName: StoreName,
-) {
+export function getStore<const StoreName extends string, const StoreSchema extends UnknownStoreSchema>({
+    connection,
+    storeName,
+    storeSchema,
+    logger,
+}: GetStoreProps<StoreName, StoreSchema>) {
     type Schema = z.infer<StoreSchema>;
     type StoreKey = keyof Schema;
 
@@ -28,6 +37,8 @@ export function getStore<const StoreName extends string, const StoreSchema exten
 
             const unknownValue = await idb.get<Schema[StoreKey]>(key as IDBValidKey, useStore);
 
+            logger.debug('get', { store: storeName, key, value: unknownValue });
+
             const result = validator.parse(unknownValue);
 
             return result as Schema[Key];
@@ -36,20 +47,30 @@ export function getStore<const StoreName extends string, const StoreSchema exten
         async set<Key extends StoreKey>(key: Key, value: Required<Schema[Key]>) {
             const validator = getValueValidator(storeSchema, key);
 
+            logger.debug('set', { store: storeName, key, value });
+
             const unknownValue = validator.parse(value);
 
             await idb.set(key as IDBValidKey, unknownValue, useStore);
         },
 
         async setMany(values: Partial<Record<StoreKey, Required<Schema[StoreKey]>>>) {
-            await idb.setMany(Object.entries(values), useStore);
+            const entries = Object.entries(values);
+
+            logger.debug('setMany', { store: storeName, values });
+
+            // TODO: validate all values before setting any of them
+
+            await idb.setMany(entries, useStore);
         },
 
         async remove<Key extends StoreKey>(key: Key) {
+            logger.debug('remove', { store: storeName, key });
             await idb.del(key as IDBValidKey, useStore);
         },
 
         async clear() {
+            logger.debug('clear', { store: storeName });
             await idb.clear(useStore);
         },
     } as const;

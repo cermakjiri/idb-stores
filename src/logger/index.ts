@@ -1,11 +1,29 @@
-import { debug, error, info, trace, warn } from 'loglevel';
+import { getLogger } from 'loglevel';
 
-export const defaultLogger = {
-    error,
-    debug,
-    info,
-    warn,
-    trace,
-} as const;
+import { name } from '../../package.json';
 
-export type Logger = typeof defaultLogger;
+export type LogLevel = 'error' | 'debug' | 'info' | 'silent';
+
+export const defaultLogLevel: LogLevel = 'error';
+
+export function createDefaultLogger(loglevel: LogLevel) {
+    const { error, debug, info, setLevel } = getLogger(name);
+
+    const defaultLogger = {
+        error<Args extends unknown[]>(...args: Args) {
+            error(`[${name}]`, ...args);
+        },
+        debug<Args extends unknown[]>(...args: Args) {
+            debug(`[${name}]`, ...args);
+        },
+        info<Args extends unknown[]>(...args: Args) {
+            info(`[${name}]`, ...args);
+        },
+    } as const;
+
+    setLevel(loglevel, true);
+
+    return defaultLogger;
+}
+
+export type Logger = ReturnType<typeof createDefaultLogger>;
