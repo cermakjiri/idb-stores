@@ -17,7 +17,7 @@ export function defaultNoIDBSupportHandler<const StoreSchemas extends UnknownSto
         return getMockStore<StoreName, StoreSchemas[StoreName]>(storeSchemas[storeName], storeName);
     };
 }
-export interface InitIDBProps {
+export interface InitIDBProps<StoreSchemas extends UnknownStoreSchemas> {
     database: {
         /**
          * IndexedDB database name
@@ -32,7 +32,7 @@ export interface InitIDBProps {
     /**
      * Zod schemas for each IndexedDB store.
      */
-    storeSchemas: UnknownStoreSchemas;
+    storeSchemas: StoreSchemas;
 
     /**
      * Called when IndexedDB is not supported (e.g. SSR).
@@ -48,19 +48,17 @@ export interface InitIDBProps {
 }
 
 // TODO: migrations
-export function initIDB<const Props extends InitIDBProps>({
+export function initIDB<const StoreSchemas extends UnknownStoreSchemas>({
     database: { name: databaseName, version: databaseVersion },
     storeSchemas,
     noIDBSupportHandler,
     logger = createDefaultLogger(defaultLogLevel),
     logLevel = defaultLogLevel,
-}: Props) {
+}: InitIDBProps<StoreSchemas>) {
     enableAll();
     setLevel(logLevel);
 
     assertDatabaseVersion(databaseVersion);
-
-    type StoreSchemas = Props['storeSchemas'];
 
     if (!isSupported()) {
         if (noIDBSupportHandler) {
@@ -84,8 +82,12 @@ export function initIDB<const Props extends InitIDBProps>({
         const storeSchema = storeSchemas[storeName];
         type StoreSchema = StoreSchemas[StoreName];
 
-        // @ts-expect-error - TODO:
-        return getStore<StoreName, StoreSchema>({ connection, storeSchema, storeName, logger });
+        return getStore<StoreName, StoreSchema>({
+            connection,
+            storeSchema,
+            storeName,
+            logger,
+        });
     }
 
     return getDatabaseStore;

@@ -2,7 +2,7 @@ import * as idb from 'idb-keyval';
 import type { z } from 'zod';
 
 import type { Logger } from './logger';
-import type { UnknownStoreSchema } from './types';
+import type { StringKey, UnknownStoreSchema } from './types';
 import { createCustomUseStore, getValueValidator } from './utils';
 
 interface GetStoreProps<StoreName extends string, StoreSchema extends UnknownStoreSchema> {
@@ -24,7 +24,7 @@ export function getStore<const StoreName extends string, const StoreSchema exten
     logger,
 }: GetStoreProps<StoreName, StoreSchema>) {
     type Schema = z.infer<StoreSchema>;
-    type StoreKey = keyof Schema;
+    type StoreKey = StringKey<Schema>;
 
     // Using a custom function instead of idb.crateStore which doesn't support creating multiple stores:
     const useStore = createCustomUseStore(connection, storeName);
@@ -44,17 +44,17 @@ export function getStore<const StoreName extends string, const StoreSchema exten
             return result as Schema[Key];
         },
 
-        async set<Key extends StoreKey>(key: Key, value: Required<Schema[Key]>) {
+        async set<Key extends StoreKey>(key: Key, value: Schema[Key]) {
             const validator = getValueValidator(storeSchema, key);
 
             logger.debug('set', { store: storeName, key, value });
 
             const unknownValue = validator.parse(value);
 
-            await idb.set(key as IDBValidKey, unknownValue, useStore);
+            await idb.set(key, unknownValue, useStore);
         },
 
-        async setMany(values: Partial<Record<StoreKey, Required<Schema[StoreKey]>>>) {
+        async setMany(values: Partial<Record<StoreKey, Schema[StoreKey]>>) {
             const entries = Object.entries(values);
 
             logger.debug('setMany', { store: storeName, values });
@@ -66,7 +66,7 @@ export function getStore<const StoreName extends string, const StoreSchema exten
 
         async remove<Key extends StoreKey>(key: Key) {
             logger.debug('remove', { store: storeName, key });
-            await idb.del(key as IDBValidKey, useStore);
+            await idb.del(key, useStore);
         },
 
         async clear() {
@@ -84,7 +84,7 @@ export function getMockStore<const StoreName extends string, const StoreSchema e
 ) {
     type Store = ReturnType<typeof getStore<StoreName, StoreSchema>>;
     type Schema = z.infer<StoreSchema>;
-    type StoreKey = keyof Schema;
+    type StoreKey = StringKey<Schema>;
 
     return {
         name: storeName,

@@ -51,7 +51,8 @@
         "deploy": "yarn format && yarn lint && yarn types-check && yarn build && yarn test",
         "release:prepare": "yarn deploy && yarn changeset",
         "release:apply": "yarn changeset version && yarn changeset tag",
-        "release:publish": "yarn changeset publish"
+        "release:publish": "yarn changeset publish",
+        "prepare": "yarn build"
     },
     "license": "MIT"
 }
