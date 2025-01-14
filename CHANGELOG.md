@@ -1,5 +1,11 @@
 # idb-stores
 
+## 0.0.20
+
+### Patch Changes
+
+- 9dc8971: Upgrade deps. Minor fix.
+
 ## 0.0.19
 
 ### Patch Changes
