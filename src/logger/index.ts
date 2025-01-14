@@ -1,10 +1,12 @@
 import { getLogger } from 'loglevel';
 
-import { name } from '../../package.json';
+import pkg from '../../package.json';
 
 export type LogLevel = 'error' | 'debug' | 'info' | 'silent';
 
 export const defaultLogLevel: LogLevel = 'error';
+
+const name = pkg.name;
 
 export function createDefaultLogger(loglevel: LogLevel) {
     const { error, debug, info, setLevel } = getLogger(name);
