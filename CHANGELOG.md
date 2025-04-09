@@ -1,5 +1,11 @@
 # idb-stores
 
+## 0.0.22
+
+### Patch Changes
+
+- 1581f10: Export more types.
+
 ## 0.0.21
 
 ### Patch Changes
