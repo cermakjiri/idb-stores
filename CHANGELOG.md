@@ -1,5 +1,11 @@
 # idb-stores
 
+## 0.0.21
+
+### Patch Changes
+
+- 8bfd1e5: Don't import name from package.json.
+
 ## 0.0.20
 
 ### Patch Changes
