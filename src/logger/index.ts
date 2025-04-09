@@ -1,12 +1,10 @@
 import { getLogger } from 'loglevel';
 
-import pkg from '../../package.json';
-
 export type LogLevel = 'error' | 'debug' | 'info' | 'silent';
 
 export const defaultLogLevel: LogLevel = 'error';
 
-const name = pkg.name;
+const name = 'idb-stores';
 
 export function createDefaultLogger(loglevel: LogLevel) {
     const { error, debug, info, setLevel } = getLogger(name);
