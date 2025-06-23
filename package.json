@@ -7,11 +7,22 @@
         "node": ">=18"
     },
     "type": "module",
+    "module": "./esm/index.js",
+    "types": "./esm/index.d.ts",
+    "main": "./cjs/index.js",
     "exports": {
         ".": {
-            "import": "./esm/index.js"
+            "import": {
+                "types": "./esm/index.d.ts",
+                "default": "./esm/index.js"
+            },
+            "require": {
+                "types": "./cjs/index.d.ts",
+                "default": "./cjs/index.js"
+            }
         },
-        "./esm": "./esm/index.js"
+        "./esm": "./esm/index.js",
+        "./cjs": "./cjs/index.js"
     },
     "repository": {
         "type": "git",
@@ -44,7 +55,8 @@
         "lint": "eslint --cache --cache-strategy=content --cache-location .cache/eslint \"./src/**/*\"",
         "types-check": "tsc --project tsconfig.types.json",
         "build:es": "rm -rf esm && tsc --project tsconfig.json",
-        "build": "yarn build:es",
+        "build:cjs": "tsc -p tsconfig.cjs.json",
+        "build": "yarn build:es && yarn build:cjs",
         "test:build": "vite build --config ./tests/vite.config.ts",
         "test:run": "node ./tests/script/puppeteerRunner.mjs",
         "test": "yarn test:build && yarn test:run",
