@@ -1,5 +1,11 @@
 # idb-stores
 
+## 0.0.23
+
+### Patch Changes
+
+- a415af3: Add CJS support.
+
 ## 0.0.22
 
 ### Patch Changes
