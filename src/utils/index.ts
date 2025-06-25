@@ -1,9 +1,9 @@
 import type { UseStore } from 'idb-keyval';
 import type { z } from 'zod';
 
-import { IDBStoresError } from '../errors';
-import type { Logger } from '../logger';
-import type { UnknownStoreSchema } from '../types';
+import { IDBStoresError } from '../errors/index.ts';
+import type { Logger } from '../logger/index.ts';
+import type { UnknownStoreSchema } from '../types/index.ts';
 
 export const isSupported = () => 'indexedDB' in globalThis;
 

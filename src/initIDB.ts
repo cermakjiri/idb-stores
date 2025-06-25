@@ -1,10 +1,10 @@
 import { enableAll, setLevel } from 'loglevel';
 
-import { IDBStoresError } from './errors';
-import { getMockStore, getStore } from './getStore';
-import { createDefaultLogger, defaultLogLevel, type Logger, type LogLevel } from './logger';
-import type { StringKey, UnknownStoreSchemas } from './types';
-import { createConnection, isSupported } from './utils';
+import { IDBStoresError } from './errors/index.ts';
+import { getMockStore, getStore } from './getStore.ts';
+import { createDefaultLogger, defaultLogLevel, type Logger, type LogLevel } from './logger/index.ts';
+import type { StringKey, UnknownStoreSchemas } from './types/index.ts';
+import { createConnection, isSupported } from './utils/index.ts';
 
 function assertDatabaseVersion(databaseVersion: number) {
     if (databaseVersion < 1 || !Number.isInteger(databaseVersion)) {

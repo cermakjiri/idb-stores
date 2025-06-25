@@ -20,9 +20,7 @@
                 "types": "./cjs/index.d.ts",
                 "default": "./cjs/index.js"
             }
-        },
-        "./esm": "./esm/index.js",
-        "./cjs": "./cjs/index.js"
+        }
     },
     "repository": {
         "type": "git",

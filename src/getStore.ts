@@ -1,9 +1,9 @@
 import * as idb from 'idb-keyval';
 import type { z } from 'zod';
 
-import type { Logger } from './logger';
-import type { StringKey, UnknownStoreSchema } from './types';
-import { createCustomUseStore, getValueValidator } from './utils';
+import type { Logger } from './logger/index.ts';
+import type { StringKey, UnknownStoreSchema } from './types/index.ts';
+import { createCustomUseStore, getValueValidator } from './utils/index.ts';
 
 interface GetStoreProps<StoreName extends string, StoreSchema extends UnknownStoreSchema> {
     connection: Promise<IDBDatabase>;
