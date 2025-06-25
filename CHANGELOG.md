@@ -1,5 +1,11 @@
 # idb-stores
 
+## 0.0.24
+
+### Patch Changes
+
+- 60d0e0b: Update tooling for ESM output.
+
 ## 0.0.23
 
 ### Patch Changes
